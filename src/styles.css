@@ -54,6 +54,12 @@ body {
   box-shadow: 0 0 10px #00ffe7;
 }
 
+.square.highlight {
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px 2px #ffeb3b;
+}
+
 .game-info {
   width: 100%;
   margin-top: 20px;
