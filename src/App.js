@@ -66,6 +66,9 @@ export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquares = history[currentMove];
+  const winnerInfo = calculateWinner(currentSquares);
+  const winner = winnerInfo ? winnerInfo.winner : null;
+  const isGameOver = winner || currentSquares.every(Boolean);
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -73,19 +76,24 @@ export default function Game() {
     setCurrentMove(nextHistory.length - 1);
     setXIsNext(!xIsNext);
   }
-  // Function to jump to a specific move in the game history
-  function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
-    setXIsNext(nextMove % 2 === 0);
+
+  function resetGame() {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
+    setXIsNext(true);
   }
-  // Determine the status message based on the game state
 
   const moves = history.map((_, move) => {
     if (move === 0) return null;
-
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>You are at move #{move}</button>
+        <button onClick={() => jumpTo(move)}>
+          {move === currentMove ? (
+            <strong>Move #{move}</strong>
+          ) : (
+            `Go to move #${move}`
+          )}
+        </button>
       </li>
     );
   });
@@ -93,9 +101,15 @@ export default function Game() {
   return (
     <div className="game">
       <div className="game-board">
+        <div className="status">{status}</div>
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
+        {isGameOver && (
+          <button className="play-again" onClick={resetGame}>
+            Play Again
+          </button>
+        )}
         <ol>{moves}</ol>
       </div>
     </div>
