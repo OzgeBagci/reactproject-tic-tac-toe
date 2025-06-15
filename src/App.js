@@ -79,23 +79,15 @@ export default function Game() {
     setXIsNext(nextMove % 2 === 0);
   }
   // Determine the status message based on the game state
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move === currentMove) {
-      description = `You are at move #${move}`;
-      return (
-        <li key={move}>
-          <span>{description}</span>
-        </li>
-      );
-    } else {
-      description = move > 0 ? `Go to move #${move}` : "Go to game start";
-      return (
-        <li key={move}>
-          <button onClick={() => jumpTo(move)}>{description}</button>
-        </li>
-      );
-    }
+
+  const moves = history.map((_, move) => {
+    if (move === 0) return null;
+
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>You are at move #{move}</button>
+      </li>
+    );
   });
 
   return (
