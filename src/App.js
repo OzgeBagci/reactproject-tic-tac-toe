@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Confetti from "react-confetti";
 
 // The Square component represents a single square in the tic-tac-toe grid
-
 function Square({ value, onSquareClick, highlight }) {
   return (
     <button
@@ -15,24 +15,16 @@ function Square({ value, onSquareClick, highlight }) {
 // The Board component renders the 3x3 grid of squares
 function Board({ xIsNext, squares, onPlay }) {
   const result = calculateWinner(squares);
-  const winner = result ? result.winner : null;
   const winningLine = result ? result.line : [];
+
+  //Handles square clicks - prevents clicks on filled squares or after game ends
   function handleClick(i) {
-    if (winner || squares[i]) {
-      return;
-    }
+    if (result || squares[i]) return;
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
     onPlay(nextSquares);
   }
-  // Determine the status message based on the game state
-  const status = winner
-    ? "Winner: " + winner
-    : !squares.includes(null)
-    ? "That's a tie!"
-    : "Next player: " + (xIsNext ? "X" : "O");
-  // Render the status message and the grid of squares
-  <div className="status">{status}</div>;
+  // Generates the 3x3 board grid dynamically
   const boardRows = [];
   for (let row = 0; row < 3; row++) {
     const squaresInRow = [];
@@ -53,23 +45,32 @@ function Board({ xIsNext, squares, onPlay }) {
       </div>
     );
   }
-  return (
-    <>
-      <div className="status">{status}</div>
-      {boardRows}
-    </>
-  );
+
+  return <>{boardRows}</>;
 }
-// The Game component manages the game state and renders the Board and game history
+// The Game component manages the game state
 export default function Game() {
   const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  // Confetti animation state
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const currentSquares = history[currentMove];
   const winnerInfo = calculateWinner(currentSquares);
   const winner = winnerInfo ? winnerInfo.winner : null;
   const isGameOver = winner || currentSquares.every(Boolean);
 
+  // Confetti effect handler
+  useEffect(() => {
+    if (winner) {
+      setShowConfetti(true);
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [winner]);
+
+  // Handles player moves and updates game history
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
@@ -77,12 +78,21 @@ export default function Game() {
     setXIsNext(!xIsNext);
   }
 
+  // Complete game reset function
   function resetGame() {
     setHistory([Array(9).fill(null)]);
     setCurrentMove(0);
     setXIsNext(true);
+    setShowConfetti(false);
   }
+  // Determine the status message based on the game state
+  const status = winner
+    ? `Winner: ${winner}`
+    : isGameOver
+    ? "That's a tie!"
+    : `Next player: ${xIsNext ? "X" : "O"}`;
 
+  //Generates movex history list
   const moves = history.map((_, move) => {
     if (move === 0) return null;
     return (
@@ -98,13 +108,30 @@ export default function Game() {
     );
   });
 
+  // Jumps to a specific move in the game history
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
+  }
+
   return (
     <div className="game">
+      {/* Confetti component that appears on wins */}{" "}
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={500}
+        />
+      )}
       <div className="game-board">
+        {/* Board status */}
         <div className="status">{status}</div>
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
+        {/* Play Again button - only shows when game is over */}
         {isGameOver && (
           <button className="play-again" onClick={resetGame}>
             Play Again
