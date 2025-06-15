@@ -29,7 +29,7 @@ function Board({ xIsNext, squares, onPlay }) {
   const status = winner
     ? "Winner: " + winner
     : !squares.includes(null)
-    ? "Draw! No winner."
+    ? "That's a tie!"
     : "Next player: " + (xIsNext ? "X" : "O");
   // Render the status message and the grid of squares
   <div className="status">{status}</div>;
