@@ -1,3 +1,41 @@
+.start-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+  color: #00ffe7;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.start-page h1 {
+  font-size: 40px;
+  margin-bottom: 120px;
+  text-shadow: 0 0 10px #00ffe7;
+}
+
+.start-page button {
+  padding: 12px 24px;
+  font-size: 20px;
+  background-color: #00ffe7;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px #00ffe7;
+}
+
+.start-page button:hover {
+  background-color: #00ccba;
+  box-shadow: 0 0 25px #00ffe7;
+  transform: scale(1.05);
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
@@ -23,7 +61,7 @@ body {
 }
 
 .status {
-  font-size: 1.6rem;
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 10px;
   color: #00ffe7;
@@ -38,7 +76,7 @@ body {
   background: #1f1f1f;
   border: 2px solid #333;
   color: #ffffff;
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: bold;
   height: 80px;
   width: 80px;
@@ -100,4 +138,22 @@ body {
   color: #000;
   border-color: #00ffe7;
   font-weight: bold;
+}
+
+.footer-container {
+  margin-top: 40px;
+  margin-left: 30px;
+  font-size: 16px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.footer-container a {
+  color: #00ffe7;
+  text-decoration: none;
+}
+
+.footer-container a:hover {
+  text-decoration: underline;
 }
