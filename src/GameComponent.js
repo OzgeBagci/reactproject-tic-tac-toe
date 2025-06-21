@@ -62,6 +62,7 @@ export default function GameComponent() {
   const winnerInfo = calculateWinner(currentSquares);
   const winner = winnerInfo ? winnerInfo.winner : null;
   const isGameOver = winner || currentSquares.every(Boolean);
+  const [gameEnded, setGameEnded] = useState(false);
 
   // Confetti effect handler
   useEffect(() => {
@@ -72,6 +73,11 @@ export default function GameComponent() {
     }
   }, [winner]);
 
+  useEffect(() => {
+    if (winner || currentSquares.every(Boolean)) {
+      setGameEnded(true);
+    }
+  }, [winner, currentSquares]);
   // Handles player moves and updates game history
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -86,6 +92,7 @@ export default function GameComponent() {
     setCurrentMove(0);
     setXIsNext(true);
     setShowConfetti(false);
+    setGameEnded(false);
   }
 
   // Jumps to a specific move in the game history
@@ -143,7 +150,7 @@ export default function GameComponent() {
         </div>
 
         <div className="game-info">
-          {isGameOver && (
+          {gameEnded && (
             <button className="play-again" onClick={resetGame}>
               Play Again
             </button>
