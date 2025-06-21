@@ -157,3 +157,42 @@ body {
 .footer-container a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 480px) {
+  .start-page h1 {
+    font-size: 28px;
+  }
+
+  .start-page button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  .game {
+    padding: 20px 15px;
+    max-width: 320px;
+  }
+
+  .square {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .status {
+    font-size: 18px;
+  }
+
+  .game-info button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .footer-container {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .footer-container a {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+}
